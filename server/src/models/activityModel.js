@@ -1,11 +1,12 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (database) => {
-    sequelize.define('Activity', {
+    database.define('Activity', {
         id: {
             type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
             primaryKey: true,
-            autoIncrement: true,
+            
         },
         activityName: {
             type: DataTypes.STRING,

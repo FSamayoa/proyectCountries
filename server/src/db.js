@@ -24,6 +24,6 @@ Activity.belongsToMany(Country,{through: 'CountryActivity'});
 
 
 module.exports = {
-    ...sequelize.models,
-    sequelize,
+    ...database.models,
+    database,
 };
