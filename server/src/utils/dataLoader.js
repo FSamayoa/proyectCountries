@@ -11,26 +11,27 @@ async function loadDataFromJson() {
         if (Array.isArray(data.countries)) {
             for (const item of data.countries) {
                 const languages = item.languages ? item.languages : { eng: 'Unknown' };
+                const allLanguajes = languages ? Object.values(languages): ['Unknown'];
                 const capital = item.capital ? item.capital[0] : 'Unknown';
                 const timezone = item.timezones ? item.timezones[0] : 'Unknown';
                 await Country.create({
                     id:item.cca3,
                     nombre: item.name.common,
                     image: item.flags.png,
-                    capital,
+                    capital: capital,
                     poblacion: item.population,
                     region: item.region,
-                    languages: languages.eng,
+                    languages: allLanguajes.join(', '),
                     maps: item.maps.googleMaps,
-                    timezone,
+                    timezone: timezone,
                    
                     
                 });
             }
 
-            console.log('Data loaded successfully');
+            console.log('Data en bd');
         } else {
-            console.error('Invalid data format: "countries" should be an array.');
+            console.error('Error.');
         }
     } catch (error) {
         console.error('Error loading data:', error);
