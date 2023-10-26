@@ -3,10 +3,11 @@ const { DataTypes } = require("sequelize");
 module.exports = (database) => {
     database.define('Country', {
         id: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
+            type: DataTypes.STRING,
             primaryKey: true,
-            
+            allowNull: false,
+            unique: true,
+
         },
         nombre: {
             type: DataTypes.STRING,
@@ -30,7 +31,7 @@ module.exports = (database) => {
         },
         languages: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         maps: {
             type: DataTypes.STRING,
@@ -40,10 +41,7 @@ module.exports = (database) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        activities: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
+
 
     });
 };
