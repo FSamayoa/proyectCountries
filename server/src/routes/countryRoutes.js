@@ -1,9 +1,11 @@
-const express = require("express");
-const router = express.Router(); 
 
 
-router.get("/",(req,res)=>{
-    res.send("ok")
-})
+const { Router } = require("express");
+const { getAllCountriesHandler, getCountryByIdHandler, getCountryByNameHandler } = require("../handlers/countriesHandler");
+const countryRoutes = Router()
 
-module.exports = router;
+countryRoutes.get("/countries", getAllCountriesHandler)
+countryRoutes.get("/countries/:id", getCountryByIdHandler)
+countryRoutes.get("/countries/name/:name", getCountryByNameHandler)
+
+module.exports = countryRoutes

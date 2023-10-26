@@ -8,7 +8,7 @@ module.exports = (database) => {
             primaryKey: true,
             
         },
-        activityName: {
+        name: {
             type: DataTypes.STRING,
             allowNull: false,
         },
@@ -24,10 +24,7 @@ module.exports = (database) => {
             type: DataTypes.ENUM("Primavera", "Verano", "Otoño", "Invierno"),
             allowNull: false,
         },
-        country: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
+       
 
     });
 };
