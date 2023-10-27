@@ -1,5 +1,6 @@
 
 const postActivities = require("../controllers/postActivities");
+const getActivities = require("../controllers/getActivityByID");
 
 
 const postActivitiesHandler = async (req, res) => {
@@ -11,6 +12,22 @@ const postActivitiesHandler = async (req, res) => {
         res.status(400).json({ error: error.message })
     }
 }
+
+const getActivities = async () => {
+    try {
+        const activities = await Activity.findAll({
+            include: [
+                {
+                    model: Country,
+                    attributes: ["id", "nombre"], // Puedes seleccionar las propiedades del país que desees
+                },
+            ],
+        });
+        return activities;
+    } catch (error) {
+        throw new Error("Error al obtener actividades");
+    }
+};
 
 
 module.exports = {

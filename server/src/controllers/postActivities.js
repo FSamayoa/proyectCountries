@@ -1,34 +1,34 @@
 const { Activity, Country } = require('../db');
-const getCountryById = require('../controllers/getCountryByID')
 
-const postActivities = async (CountriesId, name, dificultad, duracion, temporada) => {
-   
-  if (!CountriesId || !name || !dificultad || !duracion || !temporada) {
-    throw new Error("datos incompletos")
-  }
+const createActivity = async (req, res) => {
+    try {
+        const { name, dificultad, duracion, temporada, countryIds } = req.body;
 
-  let paisesActivities = 0
+        if (!name || !dificultad || !duracion || !temporada || !countryIds) {
+            return res.status(400).json({ error: "Datos incompletos" });
+        }
 
-  for (const countryId of CountriesId) {
-    const findCountry = await getCountryById(countryId)
-    if (!findCountry) {
-      throw new Error(`el pais con id ${countryId} no fue encontrado.`)
+        const [newActivity, created] = await Activity.findOrCreate({
+            where:{
+            name,
+            dificultad,
+            duracion,
+            temporada,
+            }
+        });
+
+        // Relaciona la actividad con los países
+        if (countryIds.length > 0) {
+            const countries = await Country.findAll({ where: { id: countryIds } });
+            await newActivity.setCountries(countries);
+        }
+
+        res.status(201).json(newActivity);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-    paisesActivities++;
-  }
+};
 
-  if (paisesActivities === CountriesId.length) {
-    const createActivitie = await Activity.create({ name, dificultad, duracion, temporada })
-
-    for (const countryId of CountriesId) {
-      const findCountry = await getCountryById(countryId)
-      await findCountry.addActivity(createActivitie)
-    }
-
-    return createActivitie;
-  } else {
-    throw new Error("no pudieron añadirse las actividades.")
-  }
-}
-
-module.exports = postActivities;
+module.exports = {
+    createActivity,
+};
