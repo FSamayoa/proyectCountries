@@ -1,14 +1,26 @@
-const { getActivities } = require("../handlers/activitiesHandler");
+const { Activity, Country } = require("../db");
 
-const getActivitiesController = async (req, res) => {
+const getActivityById = async (activityId) => {
     try {
-        const activities = await getActivities();
-        res.status(200).json(activities);
+        const activity = await Activity.findOne({ where: { id: activityId }, 
+            include: [
+                {
+                    model: Country,
+                    attributes: ["nombre"],
+                },
+            ],
+        });
+
+        if (!activity) {
+            throw new Error("No se encontró la actividad con el ID proporcionado");
+        }
+
+        return activity;
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        throw new Error("Error al obtener la actividad por ID: " + error.message);
     }
 };
 
 module.exports = {
-    getActivitiesController,
+    getActivityById,
 };
