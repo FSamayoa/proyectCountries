@@ -1,17 +1,13 @@
-// import style from './Card.module.css'
-import { NavLink } from 'react-router-dom'
 
-const Card = ({ id, nombre, flag, continents, capital, subregion, area, population }) => {
-    return (
-        <div className={style.card}>
-            <NavLink className={style.container} to={`/country/${id}`}>
-                <img className={style.image} src={flag} alt="" />
-                <h2 className={style.name}>{name}</h2>
-                <h2 className={style.id}>{id}</h2>
-                <h2 className={style.continents}>{continents}</h2>
-            </NavLink>
-        </div>
-    )
+
+function Card() {
+  return (
+    <div >
+      <img src="https://flagcdn.com/128x96/br.png" alt="Brasil" />
+      <h2>Brasil</h2>
+      <p>America</p>
+    </div>
+  );
 }
 
-export default Card
+export default Card;
