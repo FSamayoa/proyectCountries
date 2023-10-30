@@ -1,6 +1,17 @@
 import Button from "../Button/Button";
+import { useState } from "react";
 
 function Form() {
+    const [form, setForm] = useState({
+        actividad: "",
+        dificulta: "",
+        duracion: "",
+        temporada: "",
+        pais: [],
+
+    })
+
+
     return (
         <div>
             <form>
@@ -18,7 +29,7 @@ function Form() {
                 <input placeholder="Pais, ejem Brasil"></input>
                 <br />
                 <br />
-                <Button text='Enviar'/>
+                <Button link = '/form' text='Enviar'/>
             </form>
         </div>
     )
