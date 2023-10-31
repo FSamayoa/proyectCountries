@@ -1,11 +1,14 @@
+import {Link} from 'react-router-dom'
+import React from 'react';
 
-
-function Card() {
+function Card({ country }) {
   return (
-    <div >
-      <img src="https://flagcdn.com/128x96/br.png" alt="Brasil" />
-      <h2>Brasil</h2>
-      <p>America</p>
+    <div key={country.id}>
+      <Link to={`/countries/${country.id}`}>
+        <img src={country.image} alt={country.nombre} />
+        <h2>{country.nombre}</h2>
+        <p>{country.region}</p>
+      </Link>
     </div>
   );
 }

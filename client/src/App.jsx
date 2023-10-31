@@ -28,7 +28,7 @@ function App() {
         <Route index element={<Landing />} />
         <Route path='/*' element={<Nav />} />
         <Route path='/home' element={<Cards />} />
-        <Route path='/details' element={<Details />} />
+        <Route path='/countries/:id' element={<Details />} />
         <Route path='/form' element={<Form />} />
         
       </Routes>

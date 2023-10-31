@@ -9,7 +9,23 @@ export function validateNombre(nombre) {
 
   export function validateDificultad(dificultad) {
     if (dificultad === "") {
-      return "Selecciona una dificultad";
+      return "Selecciona la dificultad del evento";
+    }
+    return "";
+  }
+
+  
+  export function validateDuration(duracion) {
+    if (duracion === "") {
+      return "Selecciona la duracion del evento";
+    }
+    return "";
+  }
+
+
+  export function validateTemporada(temporada) {
+    if (temporada.length === 0) {
+      return "Debes seleccionar al menos una temporada";
     }
     return "";
   }
