@@ -1,41 +1,5 @@
-// import { useParams } from "react-router-dom";
-// import { useSelector } from 'react-redux';
-
-// function Details() {
-    
-//     const { id } = useParams()
-//     const countries = useSelector((state) => state.countries);
-    
-    
-//     const country = countries.find((c) => c.id === id);
-//     console.log("Country:", country);
-
-//     if (!country) {
-//         return <div>Cargando...</div>;
-//     }
-//     return (
-//         <div >
-//             <img src={country?.image} alt={country?.nombre} />
-//             <h2>Pais: {country?.nombre}</h2>
-//             <h3>Capital: {country?.capital}</h3>
-//             <h4>Continente: {country?.region}</h4>
-//             <h4>Idiomas: {country?.languages}</h4>
-//             <h4>Poblacion: {country?.poblacion}</h4>
-//             <h4>Ubicacion: {country?.maps}</h4>
-//             <h4>Activities: {country?.activities}</h4>
-//             <ul>
-//                 {country?.activities.map((activity, index) => (
-//                     <li key={index}>{activity.name}</li>
-//                 ))}
-//             </ul>
-//         </div>
-//     )
-// }
-
-// export default Details
-
-import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
+import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCountryData } from '../../redux/actions';
 import axios from "axios";
@@ -72,7 +36,9 @@ function Details() {
       <h4>Continente: {countryDetail.region}</h4>
       <h4>Idiomas: {countryDetail.languages}</h4>
       <h4>Poblacion: {countryDetail.poblacion} personas</h4>
-      <h4>-Ubicacion en maps-</h4>
+      <a href={countryDetail.maps} target="_blank">
+      -Ubicacion en maps-
+      </a>
       <h4>Actividades para realizar en el destino: </h4>
       <ul>
         {Array.isArray(countryDetail?.Activities) ? (
@@ -94,3 +60,5 @@ function Details() {
 }
 
 export default Details;
+
+
