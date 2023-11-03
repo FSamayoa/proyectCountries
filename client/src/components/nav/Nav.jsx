@@ -9,7 +9,7 @@ function Nav()  {
             <Button link='/home' text='🏠 Home' />
             <Button link='/activities' text='🕺💃 Activities' />
             <Button link='/form' text='📋 Form' />
-            <Searchbar/>
+            {/* <Searchbar/> */}
         </div>
     )
 }

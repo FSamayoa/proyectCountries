@@ -78,6 +78,10 @@ function Cards() {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedCountries, setPaginatedCountries] = useState([]);
   const [searchedCountries, setSearchedCountries] = useState([]);
+  const [showNotFound, setShowNotFound] = useState(false); // Define showNotFound
+  const [notFoundCountry, setNotFoundCountry] = useState(''); // Define notFoundCountry
+
+
 
   useEffect(() => {
     // Calcular el índice de inicio y fin de los países para la página actual
@@ -98,21 +102,41 @@ function Cards() {
   };
 
   const handleSearch = (searchQuery) => {
-    // Realizar la búsqueda y filtrar los países
     const filteredCountries = countries.filter((country) =>
       country.nombre.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
-    // Actualizar el estado local con los países filtrados
+  
+    // Actualiza el estado de los países buscados
     setSearchedCountries(filteredCountries);
-
-    // Reiniciar la paginación a la primera página
-    setCurrentPage(1);
+  
+    // Verifica si se encontraron resultados
+    if (filteredCountries.length === 0) {
+      // Mostrar el mensaje de "País no encontrado"
+      setShowNotFound(true);
+      // Guarda el nombre del país no encontrado
+      setNotFoundCountry(searchQuery);
+    } else {
+      // Restablecer el mensaje de "País no encontrado"
+      setShowNotFound(false);
+      setNotFoundCountry(''); // Limpia el nombre del país no encontrado
+    }
   };
+  
+
+
+  const handleResetSearch = () => {
+    // Restablecer los resultados de búsqueda
+    setSearchedCountries([]);
+  };
+
+  
 
   return (
     <div>
-      <Searchbar onSearch={handleSearch} />
+      <Searchbar onSearch={handleSearch} onReset={handleResetSearch} />
+      {showNotFound ? (
+        <p>{`El país "${notFoundCountry}" no se encontró.`}</p>
+      ) : null}
       {paginatedCountries.map((country) => (
         <Card key={country.id} country={country} />
       ))}

@@ -73,7 +73,7 @@
 
 import React, { useState } from 'react';
 
-function Searchbar({ onSearch }) {
+function Searchbar({ onSearch, onReset }) {
   const [query, setQuery] = useState('');
 
   const handleChange = (event) => {
@@ -83,6 +83,11 @@ function Searchbar({ onSearch }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     onSearch(query);
+  };
+
+  const handleReset = () => {
+    // Llama a la función para restablecer los resultados de búsqueda
+    onReset();
   };
 
   return (
@@ -96,6 +101,7 @@ function Searchbar({ onSearch }) {
         />
         <button type="submit">Buscar</button>
       </form>
+      <button onClick={handleReset}>Todos</button>
     </div>
   );
 }

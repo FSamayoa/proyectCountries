@@ -8,94 +8,98 @@ import {
 } from "./validation";
 
 function Form() {
+    
+    const [disabled, setDisabled] = useState(true);
     const [form, setForm] = useState({
         nombre: "",
         dificultad: "",
         duracion: "",
         temporada: [],
-        pais: [],
+        pais: "",
+    });
 
-    })
+    const [errors, setErrors] = useState({
+        nombre: "",
+        dificultad: "",
+        duracion: "",
+        temporada: "",
+    });
 
-    const [disabled, setDisabled] = useState(true);
 
-    const [errors, setErrors] = useState({});
+    const handleInputNombre = (event) => {
+        const nombre = event.target.value;
+        setForm({ ...form, nombre });
+        setErrors({ ...errors, nombre: validateNombre(nombre) });
+    };
+
+    const handleSelectDificultad = (event) => {
+        const dificultad = event.target.value;
+        setForm({ ...form, dificultad });
+        setErrors({ ...errors, dificultad: validateDificultad(dificultad) });
+    };
+
+    const handleSelectDuracion = (event) => {
+        const duracion = event.target.value;
+        setForm({ ...form, duracion });
+        setErrors({ ...errors, duracion: validateDuration(duracion) });
+    };
+
+    const handleCheckboxTemporada = (event) => {
+        const temporadaValue = event.target.value;
+        const isChecked = event.target.checked;
+        const updatedTemporada = [...form.temporada];
+
+        if (isChecked) {
+            updatedTemporada.push(temporadaValue);
+        } else {
+            const index = updatedTemporada.indexOf(temporadaValue);
+            if (index !== -1) {
+                updatedTemporada.splice(index, 1);
+            }
+        }
+
+        setForm({ ...form, temporada: updatedTemporada });
+        setErrors({ ...errors, temporada: validateTemporada(updatedTemporada) });
+    };
+
+    const handleSelectPais = (event) => {
+        const pais = event.target.value;
+        setForm({ ...form, pais });
+    };
+
+    function isFormValid() {
+        // Realiza las validaciones
+        const validationErrors = {};
+        validationErrors.nombre = validateNombre(form.nombre);
+        validationErrors.dificultad = validateDificultad(form.dificultad);
+        validationErrors.duracion = validateDuration(form.duracion);
+        validationErrors.temporada = validateTemporada(form.temporada);
+      
+        // Verifica si hay errores
+        return Object.values(validationErrors).every((error) => error === "");
+      }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
+      
         // Realiza las validaciones y actualiza el estado de errores
         const validationErrors = {};
         validationErrors.nombre = validateNombre(form.nombre);
         validationErrors.dificultad = validateDificultad(form.dificultad);
         validationErrors.duracion = validateDuration(form.duracion);
         validationErrors.temporada = validateTemporada(form.temporada);
-
+      
         setErrors(validationErrors);
-        setDisabled(
-            !Object.values(form).every((value) => value !== "") ||
-            Object.values(errors).some((error) => error !== "")
-        );
-
-        if (
-            Object.values(validationErrors).every((error) => error === "") &&
-            Object.values(form).every((value) => value !== "")
-        ) {
-           // Aquí enviar los datos al backend
-
-        }
-    };
-
-
-    const handleInputNombre = (event) => {
-        const nombre = event.target.value;
-        const error = validateNombre(nombre);
-        setErrors({ ...errors, nombre: error });
-        setForm({ ...form, nombre });
-        updateDisabled();
-    };
-
-
-    const handleSelectDifficult = (event) => {
-        const dificultad = event.target.value;
-        const error = validateDificultad(dificultad);
-        setErrors({ ...errors, dificultad: error });
-        setForm({ ...form, dificultad });
-        updateDisabled();
-    }
-
-    const handleSelectDuration = (event) => {
-        const duracion = event.target.value;
-        const error = validateDuration(duracion);
-        setErrors({ ...errors, duracion: error });
-        setForm({ ...form, duracion });
-        updateDisabled();
-    }
-
-    const handleSeasons = (event) => {
-        const temporadaValue = event.target.value;
-        const isSeasonChecked = event.target.checked;
-
-        if (isSeasonChecked) {
-            const newTemporada = [...form.temporada, temporadaValue];
-            setForm({ ...form, temporada: newTemporada });
-            setErrors({ ...errors, temporada: validateTemporada(newTemporada) });
+      
+        // Verifica si hay errores
+        if (Object.values(validationErrors).every((error) => error === "")) {
+          // Deshabilita el botón de envío
+          setDisabled(false);
         } else {
-            const newTemporada = form.temporada.filter((season) => season !== temporadaValue);
-            setForm({ ...form, temporada: newTemporada });
-            setErrors({ ...errors, temporada: validateTemporada(newTemporada) });
+          // Habilita el botón de envío
+          setDisabled(true);
         }
-        updateDisabled();
-
-    }
-
-    const updateDisabled = () => {
-        const isDisabled = Object.values(errors).some((error) => error !== "") ||
-            Object.values(form).some((value) => value === "");
-    
-        setDisabled(isDisabled);
-    };
-
+      };
 
     return (
         <div>
@@ -118,8 +122,9 @@ function Form() {
                     <select
                         name="dificultad"
                         value={form.dificultad}
-                        onChange={handleSelectDifficult}
+                        onChange={handleSelectDificultad}
                     >
+                        <option value="">Selecciona una dificultad</option>
                         <option value="Fácil">Fácil</option>
                         <option value="Dificultad Media">Dificultad Media</option>
                         <option value="Difícil">Difícil</option>
@@ -127,22 +132,25 @@ function Form() {
                 </label>
                 {errors.dificultad && <p style={{ color: "red" }}>{errors.dificultad}</p>}
                 <br />
+
                 <label>
-                    Duracion de la actividad:
+                    Duración de la actividad:
                     <select
                         name="duracion"
                         value={form.duracion}
-                        onChange={handleSelectDuration}
+                        onChange={handleSelectDuracion}
                     >
+                        <option value="">Selecciona una duración</option>
                         <option value="30">30 minutos</option>
                         <option value="60">60 minutos</option>
                         <option value="90">90 minutos</option>
                         <option value="120">120 minutos</option>
-                        <option value="150">150 o mas</option>
+                        <option value="150">150 o más</option>
                     </select>
                 </label>
                 {errors.duracion && <p style={{ color: "red" }}>{errors.duracion}</p>}
                 <br />
+
                 <p>Temporada para la actividad:</p>
                 <label>
                     Primavera
@@ -150,7 +158,7 @@ function Form() {
                         type="checkbox"
                         value="Primavera"
                         checked={form.temporada.includes("Primavera")}
-                        onChange={handleSeasons}
+                        onChange={handleCheckboxTemporada}
                     />
                 </label>
                 <label>
@@ -159,7 +167,7 @@ function Form() {
                         type="checkbox"
                         value="Verano"
                         checked={form.temporada.includes("Verano")}
-                        onChange={handleSeasons}
+                        onChange={handleCheckboxTemporada}
                     />
                 </label>
                 <label>
@@ -168,7 +176,7 @@ function Form() {
                         type="checkbox"
                         value="Otoño"
                         checked={form.temporada.includes("Otoño")}
-                        onChange={handleSeasons}
+                        onChange={handleCheckboxTemporada}
                     />
                 </label>
                 <label>
@@ -177,22 +185,40 @@ function Form() {
                         type="checkbox"
                         value="Invierno"
                         checked={form.temporada.includes("Invierno")}
-                        onChange={handleSeasons}
+                        onChange={handleCheckboxTemporada}
                     />
+                </label>
+                {errors.temporada && <p style={{ color: 'red' }}>{errors.temporada}</p>}
+                <br />
+
+                <label>
+                    País:
+                    <select
+                        name="pais"
+                        value={form.pais}
+                        onChange={handleSelectPais}
+                    >
+                        <option value="">Selecciona un país</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="Brasil">Brasil</option>
+                        <option value="Chile">Chile</option>
+                        {/* Agrega más opciones de países según sea necesario */}
+                    </select>
                 </label>
                 <br />
                 <br />
-                <input placeholder="Pais, ejem Brasil"></input>
-                <br />
-                <br />
+
                 <Button
                     type="submit"
                     text='Enviar'
-                    disabled={disabled}
-                />{console.log("boton")}
+                    disabled={!isFormValid()}
+                ></Button>
             </form>
+            
         </div>
-    )
+    );
 }
 
 export default Form;
+
+
