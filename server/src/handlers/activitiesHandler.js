@@ -1,16 +1,16 @@
 
-const postActivities = require("../controllers/postActivities");
 const {getAllActivities} = require("../controllers/getAllActivities");
 const {getActivityById} = require("../controllers/getActivityByID");
 const {deleteActivity} = require("../controllers/deleteActivities");
 const {updateActivity} = require ("../controllers/putActivities")
+const {createActivity} = require ("../controllers/postActivities")
 
 
 const postActivitiesHandler = async (req, res) => {
     try {
-        const { CountriesId, name, dificultad, duracion, temporada } = req.body;
-        const postActivity = await postActivities(CountriesId, name, dificultad, duracion, temporada)
-        res.status(201).send("Success: The activity has been successfully created.")
+        const { CountriesId, name, dificultad, duracion, temporada, countryName } = req.body;
+        const postActivity = await createActivity(CountriesId, name, dificultad, duracion, temporada,countryName)
+        res.status(201).json(postActivity)
     } catch (error) {
         res.status(400).json({ error: error.message })
     }

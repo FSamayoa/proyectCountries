@@ -39,3 +39,14 @@ export const fetchCountries = () => {
         });
     };
   };
+
+
+
+  export const createActivity = async (activityData) => {
+    try {
+        const response = await axios.post('/post', activityData);
+        return response.data; // Puedes devolver los datos de la actividad creada si es necesario
+    } catch (error) {
+        throw error; // Lanzar el error para manejarlo en el componente
+    }
+};

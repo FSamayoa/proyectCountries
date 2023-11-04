@@ -8,10 +8,10 @@ const { getAllActivitiesHandler,
 
 const activitiesRouter = Router()
 
-activitiesRouter.get("/", getAllActivitiesHandler)
-activitiesRouter.post("/post", createActivity)
-activitiesRouter.get("/:id", getActivityByIdHandler)
-activitiesRouter.delete("/delete/:ActivityId", deleteActivityHandler)
+activitiesRouter.get("/activities/", getAllActivitiesHandler)
+activitiesRouter.post("/activities/post", createActivity)
+activitiesRouter.get("/activities/:id", getActivityByIdHandler)
+activitiesRouter.delete("/activities/delete/:ActivityId", deleteActivityHandler)
 // activitiesRouter.put("/:activityId", updateActivityHandler)
 
 module.exports = activitiesRouter
