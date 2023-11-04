@@ -23,21 +23,60 @@ function Cards() {
   const [showNotFound, setShowNotFound] = useState(false); // Define showNotFound
   const [notFoundCountry, setNotFoundCountry] = useState(''); // Define notFoundCountry
 
+  const [regionFilter, setRegionFilter] = useState(''); // Filtro por región
+  const [sortBy, setSortBy] = useState(''); // Ordenamiento
 
 
   useEffect(() => {
     // Calcular el índice de inicio y fin de los países para la página actual
     const startCountryIndex = (currentPage - 1) * 10;
     const endCountryIndex = startCountryIndex + 10;
+    const currentCountries = sortedCountries.slice(startCountryIndex, endCountryIndex);
 
     // Obtener los países para la página actual
-    const currentCountries = searchedCountries.length > 0
-      ? searchedCountries.slice(startCountryIndex, endCountryIndex)
-      : countries.slice(startCountryIndex, endCountryIndex);
+    // const currentCountries = searchedCountries.length > 0
+    //   ? searchedCountries.slice(startCountryIndex, endCountryIndex)
+    //   : countries.slice(startCountryIndex, endCountryIndex);
 
     // Actualizar el estado de los países paginados
     setPaginatedCountries(currentCountries);
-  }, [countries, currentPage, searchedCountries]);
+  }, [countries, currentPage, searchedCountries, regionFilter, sortBy]);
+
+  const filteredCountries = searchedCountries.length > 0
+    ? searchedCountries
+    : countries;
+
+  const filteredByRegion = regionFilter
+    ? filteredCountries.filter((country) => country.region === regionFilter)
+    : filteredCountries;
+
+  // Aplicar ordenamiento
+  const sortedCountries = [...filteredByRegion];
+
+  if (sortBy === 'name') {
+    // Ordenar por nombre
+    sortedCountries.sort((a, b) => a.nombre.localeCompare(b.nombre));
+  } else if (sortBy === 'nameDesc') {
+    // Ordenar por nombre en orden descendente (z-a)
+    sortedCountries.sort((a, b) => b.nombre.localeCompare(a.nombre));
+  }
+
+
+
+
+
+  const handleRegionFilter = (selectedRegion) => {
+    // Aplicar el filtro por región
+    setRegionFilter(selectedRegion);
+
+    // Restablecer la página actual cuando se aplica el filtro
+    setCurrentPage(1);
+  };
+
+  // Función para cambiar el criterio de ordenamiento
+  const handleSortChange = (selectedSort) => {
+    setSortBy(selectedSort);
+  };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -47,10 +86,10 @@ function Cards() {
     const filteredCountries = countries.filter((country) =>
       country.nombre.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  
+
     // Actualiza el estado de los países buscados
     setSearchedCountries(filteredCountries);
-  
+
     // Verifica si se encontraron resultados
     if (filteredCountries.length === 0) {
       // Mostrar el mensaje de "País no encontrado"
@@ -63,7 +102,7 @@ function Cards() {
       setNotFoundCountry(''); // Limpia el nombre del país no encontrado
     }
   };
-  
+
 
 
   const handleResetSearch = () => {
@@ -71,7 +110,7 @@ function Cards() {
     setSearchedCountries([]);
   };
 
-  
+
 
   return (
     <div>
@@ -79,11 +118,29 @@ function Cards() {
       {showNotFound ? (
         <p>{`El país "${notFoundCountry}" no se encontró.`}</p>
       ) : null}
-      {paginatedCountries.map((country) => (
-        <Card key={country.id} country={country} />
-      ))}
+      <div>
+        <button onClick={() => handleRegionFilter('Africa')}>Africa</button>
+        <button onClick={() => handleRegionFilter('Americas')}>America</button>
+        <button onClick={() => handleRegionFilter('Asia')}>Asia</button>
+        <button onClick={() => handleRegionFilter('Europe')}>Europa</button>
+        <button onClick={() => handleRegionFilter('Oceania')}>Oceania</button>
+        {/* Menú desplegable para ordenar */}
+        <select onChange={(e) => handleSortChange(e.target.value)}>
+          <option value="">Sin orden</option>
+          <option value="name">Ordenar A-Z por nombre</option>
+          <option value="nameDesc">Ordenar Z-A por nombre</option>
+        </select>
+        </div>
+      {/* Renderizar tarjetas y números de página */}
+      {sortedCountries.length > 0 ? (
+        paginatedCountries.map((country) => (
+          <Card key={country.id} country={country} />
+        ))
+      ) : (
+        <p>No se encontraron países que cumplan con los filtros seleccionados.</p>
+      )}
       <PageNumbers
-        totalPages={searchedCountries.length > 0 ? Math.ceil(searchedCountries.length / 10) : totalPages}
+        totalPages={Math.ceil(sortedCountries.length / 10)}
         current={currentPage}
         onPageChange={handlePageChange}
       />
