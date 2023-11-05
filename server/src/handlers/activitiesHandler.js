@@ -7,13 +7,13 @@ const {createActivity} = require ("../controllers/postActivities")
 
 
 const postActivitiesHandler = async (req, res) => {
-    try {
-        const { CountriesId, name, dificultad, duracion, temporada, countryName } = req.body;
-        const postActivity = await createActivity(CountriesId, name, dificultad, duracion, temporada,countryName)
-        res.status(201).json(postActivity)
-    } catch (error) {
-        res.status(400).json({ error: error.message })
-    }
+  try {
+      const { name, dificultad, duracion, temporada, countryName } = req.body; // Asegúrate de que los campos coincidan con la solicitud
+      const postActivity = await createActivity(name, dificultad, duracion, temporada, countryName); // Utiliza la función correcta
+      res.status(201).json(postActivity);
+  } catch (error) {
+      res.status(400).json({ error: error.message });
+  }
 }
 
 
