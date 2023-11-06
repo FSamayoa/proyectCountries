@@ -1,0 +1,58 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra horizontalmente el contenido */
+    text-align: center;
+  
+  }
+  
+.title {
+    font-size: 24px; /* Tamaño del título */
+    margin-bottom: 16px; /* Espacio inferior entre el título y la imagen/texto */
+  }
+  
+.card {
+    display: flex;
+    justify-content: space-between; /* Separa los elementos en dos columnas */
+    background-color: #3b3b3b; /* Color de fondo de la tarjeta */
+    padding: 16px; /* Espacio interno de la tarjeta */
+    border-radius: 15px; /* Borde redondeado de la tarjeta */
+    width: 60%; /* Ancho de la tarjeta */
+    margin: 0 auto; /* Centra horizontalmente la tarjeta */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra de la tarjeta */
+    text-align: center;
+    color: #04aef7;
+}
+
+.texto{
+  display: flex;
+}
+
+.cardActividades {
+  display: flex;
+  justify-content: space-between; /* Separa los elementos en dos columnas */
+  background-color:#3b3b3b;/* Color de fondo de la tarjeta */
+  padding: 16px; /* Espacio interno de la tarjeta */
+  border-radius: 15px; /* Borde redondeado de la tarjeta */
+  width: 20%; /* Ancho de la tarjeta */
+  margin: 0 auto; /* Centra horizontalmente la tarjeta */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra de la tarjeta */
+  text-align: center;
+  color: #04aef7;
+}
+
+.textoActividades{
+  display: flex;
+  text-align: left;
+}
+  
+.image {
+    width: 35vw; /* Ajusta el tamaño máximo de la imagen */
+    border-radius: 15px;
+}
+  
+  /* .text {
+    flex: 1; 
+    padding-left: 16px; 
+    text-align: left;
+  } */

@@ -1,0 +1,16 @@
+.divNav {
+    display: flex;
+    background-color: rgb(61, 61, 61);
+    height: 45px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border: 35px;
+   
+}
+
+.navButton {
+    margin: 50px;
+    border: 10px;
+}

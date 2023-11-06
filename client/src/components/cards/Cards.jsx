@@ -4,6 +4,7 @@ import { fetchCountries } from '../../redux/actions';
 import Card from '../card/Card';
 import PageNumbers from '../PageNumbers/PageNumbers';
 import Searchbar from '../searchbar/Searchbar'; // Asegúrate de proporcionar la ruta correcta
+import styles from "../cards/Cards.module.css"
 
 function Cards() {
   const dispatch = useDispatch();
@@ -114,11 +115,14 @@ function Cards() {
 
   return (
     <div>
-      <Searchbar onSearch={handleSearch} onReset={handleResetSearch} />
-      {showNotFound ? (
-        <p>{`El país "${notFoundCountry}" no se encontró.`}</p>
-      ) : null}
       <div>
+        <Searchbar onSearch={handleSearch} onReset={handleResetSearch} />
+        {showNotFound ? (
+          <p>{`El país "${notFoundCountry}" no se encontró.`}</p>
+        ) : null}
+      </div>
+      <div>
+        <button onClick={() => handleRegionFilter('')}>All</button>
         <button onClick={() => handleRegionFilter('Africa')}>Africa</button>
         <button onClick={() => handleRegionFilter('Americas')}>America</button>
         <button onClick={() => handleRegionFilter('Asia')}>Asia</button>
@@ -126,19 +130,21 @@ function Cards() {
         <button onClick={() => handleRegionFilter('Oceania')}>Oceania</button>
         {/* Menú desplegable para ordenar */}
         <select onChange={(e) => handleSortChange(e.target.value)}>
-          <option value="">Sin orden</option>
-          <option value="name">Ordenar A-Z por nombre</option>
-          <option value="nameDesc">Ordenar Z-A por nombre</option>
+          <option value="">Ordenado</option>
+          <option value="name">A-Z</option>
+          <option value="nameDesc">Z-A</option>
         </select>
-        </div>
-      {/* Renderizar tarjetas y números de página */}
-      {sortedCountries.length > 0 ? (
-        paginatedCountries.map((country) => (
-          <Card key={country.id} country={country} />
-        ))
-      ) : (
-        <p>No se encontraron países que cumplan con los filtros seleccionados.</p>
-      )}
+      </div>
+      <div className={styles.divCard}>
+        {/* Renderizar tarjetas y números de página */}
+        {sortedCountries.length > 0 ? (
+          paginatedCountries.map((country) => (
+            <Card key={country.id} country={country} />
+          ))
+        ) : (
+          <p>No se encontraron países que cumplan con los filtros seleccionados.</p>
+        )}
+      </div>
       <PageNumbers
         totalPages={Math.ceil(sortedCountries.length / 10)}
         current={currentPage}

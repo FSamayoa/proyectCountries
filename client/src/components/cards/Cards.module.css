@@ -1,0 +1,18 @@
+.divCard {
+    /* background-color: black; */
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border: 10px;
+    @media (max-width: 1000px) {
+        .divCards {
+          flex-direction: column; /* Cambia la dirección de flex a columna */
+        }
+      
+        .card {
+          width: 100%; /* Ancho completo en pantallas pequeñas */
+        }
+      }
+}

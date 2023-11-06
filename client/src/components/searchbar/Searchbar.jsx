@@ -92,6 +92,7 @@ function Searchbar({ onSearch, onReset }) {
 
   return (
     <div className="search-bar">
+      <hr></hr>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -100,8 +101,9 @@ function Searchbar({ onSearch, onReset }) {
           value={query}
         />
         <button type="submit">Buscar</button>
-      </form>
       <button onClick={handleReset}>Todos</button>
+      </form>
+      <hr></hr>
     </div>
   );
 }

@@ -1,0 +1,32 @@
+.divCard {
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    margin: 15px;
+    width: 17vw;
+    height: 40vh;
+    background-color: #3b3b3b;
+       
+  }
+
+  .imgCard {
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    margin: 15px;
+    width: 15vw;
+    height: 20vh;
+    border-color: rgb(11, 15, 4);
+         
+  }
+  
+  .link{
+    color: #04aef7;
+    text-decoration: none;
+  }
+
+  .link:hover {
+    text-decoration: none;
+  }
+
+  

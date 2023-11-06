@@ -4,24 +4,25 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(16, 154, 196, 0.87);
+  color:  rgba(93, 74, 230, 0.87);
   background-color: #242424;
 }
 
 button {
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  padding: 0.2em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
-  color:  rgba(16, 154, 196, 0.87);
+  color:  rgba(93, 74, 230, 0.87);
+  margin-right: 8px;
 }
 button:hover {
-  border-color: #0c18f6;
+  border-color: #c6c8f4;
 }
 button:focus,
 button:focus-visible {
