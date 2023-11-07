@@ -20,6 +20,11 @@ const createActivity = async (req, res) => {
         // Relaciona la actividad con los países
         if (countryName.length > 0) {
             const countries = await Country.findAll({ where: { nombre: countryName } });
+
+            if (countries.length === 0) {
+              return res.status(400).json({ error: "No se encontraron países con ese nombre" });
+            }
+            
             await newActivity.setCountries(countries);
         }
 
