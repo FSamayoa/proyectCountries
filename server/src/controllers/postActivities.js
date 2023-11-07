@@ -4,18 +4,24 @@ const createActivity = async (req, res) => {
     try {
         const { name, dificultad, duracion, temporada, countryName } = req.body;
 
+        // Agregar un registro para verificar si los datos se reciben correctamente
+        console.log('Datos recibidos:', name, dificultad, duracion, temporada, countryName);
+
         if (!name || !dificultad || !duracion || !temporada || !countryName) {
             return res.status(400).json({ error: "Datos incompletos" });
         }
 
         const [newActivity, created] = await Activity.findOrCreate({
-            where:{
-            name,
-            dificultad,
-            duracion,
-            temporada,
+            where: {
+                name,
+                dificultad,
+                duracion,
+                temporada,
             }
         });
+
+        // Agregar registros para verificar el proceso de creación
+        console.log('Actividad creada:', newActivity.toJSON());
 
         // Relaciona la actividad con los países
         if (countryName.length > 0) {
@@ -30,6 +36,9 @@ const createActivity = async (req, res) => {
 
         res.status(201).json(newActivity);
     } catch (error) {
+        console.error('Error al crear la actividad:', error);
+
+        // Cambia el código de estado a 500 para errores internos del servidor
         res.status(500).json({ error: error.message });
     }
 };

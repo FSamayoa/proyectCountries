@@ -225,55 +225,158 @@
 
 // export default Form;
 
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 function FormComponent() {
   const [formData, setFormData] = useState({
-    name: 'ciclismo',
-    dificultad: 'facil',
-    duracion: '30',
-    temporada: ['Verano'],
-    countryName: 'Kenya',
+    name: '',
+    dificultad: '',
+    duracion: '',
+    temporada: '',
+    countryName: '',
   });
+
+  const [errors, setErrors] = useState({});
+
+  const countries = useSelector((state) => state.countries);
+
+  const handleInput = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const isFormValid = () => {
+    const newErrors = {};
+    if (!formData.name) {
+      newErrors.name = 'El nombre es requerido';
+    }
+    if (!formData.dificultad) {
+      newErrors.dificultad = 'La dificultad es requerida';
+    }
+    if (!formData.duracion) {
+      newErrors.duracion = 'La duración es requerida';
+    }
+    if (!formData.temporada) {
+      newErrors.temporada = 'La temporada es requerida';
+    }
+    if (!formData.countryName) {
+      newErrors.countryName = 'El país es requerido';
+    }
+    setErrors(newErrors);
+    return Object.values(newErrors).every((error) => error === '');
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    try {
-      // Realiza una solicitud GET para obtener actividades con el mismo nombre
-      const existingActivities = await axios.get(`http://127.0.0.1:3001/activities?name=${formData.name}`);
-
-      // Verifica si alguna actividad coincide con todos los campos
-      const activityExists = existingActivities.data.some((activity) => {
-        return (
-          activity.name === formData.name &&
-          activity.dificultad === formData.dificultad &&
-          activity.duracion === parseInt(formData.duracion) &&
-          activity.temporada === formData.temporada.join(',') &&
-          activity.countryName === formData.countryName
-        );
-      });
-
-      if (activityExists) {
-        console.log('La actividad ya existe:', existingActivities.data);
-      } else {
-        // Si no existe ninguna actividad que coincida, crea la nueva actividad
+    if (isFormValid()) {
+      try {
         const response = await axios.post('http://127.0.0.1:3001/activities/post', formData);
         console.log('Actividad creada:', response.data);
+        // Puedes agregar lógica adicional aquí, como mostrar un mensaje al usuario.
+      } catch (error) {
+        console.error('Error al crear la actividad:', error);
+        // Puedes manejar errores de solicitud aquí, como mostrar un mensaje de error al usuario.
       }
-
-      // Puedes agregar lógica adicional aquí, como mostrar un mensaje al usuario.
-    } catch (error) {
-      console.error('Error al crear o verificar la actividad:', error);
-      // Puedes manejar errores de solicitud aquí, como mostrar un mensaje de error al usuario.
     }
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        {/* Agrega los campos de entrada para el nombre, dificultad, duración, temporada y país */}
+        <h2>Registra una actividad</h2>
+        <br />
+        <br />
+
+        <input
+          placeholder="Actividad, ejem: Surf"
+          name="name"
+          value={formData.name}
+          onChange={handleInput}
+        />
+        {errors.name && <p style={{ color: 'red' }}>{errors.name}</p>}
+        <br />
+
+        <label>
+          Dificultad de la actividad:
+          <select
+            name="dificultad"
+            value={formData.dificultad}
+            onChange={handleInput}
+          >
+            <option value="">Selecciona una dificultad</option>
+            <option value="Fácil">Fácil</option>
+            <option value="Media">Media</option>
+            <option value="Difícil">Difícil</option>
+          </select>
+        </label>
+        {errors.dificultad && <p style={{ color: 'red' }}>{errors.dificultad}</p>}
+        <br />
+
+        <label>
+          Duración de la actividad (min):
+          <select
+            name="duracion"
+            value={formData.duracion}
+            onChange={handleInput}
+          >
+            <option value="">Selecciona una duración</option>
+            <option value="30">30</option>
+            <option value="60">60</option>
+            <option value="90">90</option>
+            <option value="120">120</option>
+            <option value="150">150</option>
+          </select>
+        </label>
+        {errors.duracion && <p style={{ color: 'red' }}>{errors.duracion}</p>}
+        <br />
+
+
+        <label>
+          Temporada para la actividad:
+          <select
+            name="temporada"
+            value={formData.temporada}
+            onChange={handleInput}
+          >
+            <option value="">Selecciona una temporada</option>
+            <option value="Primavera">Primavera</option>
+            <option value="Verano">Verano</option>
+            <option value="Otoño">Otoño</option>
+            <option value="Invierno">Invierno</option>
+        
+          </select>
+        </label>
+        {errors.temporada && <p style={{ color: 'red' }}>{errors.temporada}</p>}
+        <br />
+
+        
+        <label>
+          País:
+          <select
+            name="countryName"
+            value={formData.countryName}
+            onChange={handleInput}
+          >
+            <option value="">Selecciona un país</option>
+            {countries.map((country) => (
+              <option key={country.id} value={country.nombre}>
+                {country.nombre}
+              </option>
+            ))}
+          </select>
+        </label>
+        {errors.countryName && (
+          <p style={{ color: 'red' }}>{errors.countryName}</p>
+        )}
+        <br />
+        <br />
+
         <button type="submit">Enviar</button>
       </form>
     </div>
