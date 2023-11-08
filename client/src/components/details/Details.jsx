@@ -8,7 +8,7 @@ import styles from "../details/Details.module.css"
 function Details() {
   const [countryDetail, setCountryDetail] = useState([]);
   const dispatch = useDispatch();
-  const { id } = useParams(); /* Obtén el id del país, probablemente utilizando useParams() o algo similar */
+  const { id } = useParams(); 
 
   useEffect(() => {
     axios(`http://localhost:3001/countries/${id}`)

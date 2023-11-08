@@ -1,6 +1,5 @@
 import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
-import Searchbar from "../searchbar/Searchbar";
 import styles from "../nav/Nav.module.css"
 
 function Nav()  {

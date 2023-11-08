@@ -11,6 +11,5 @@ db.database.sync({ force: true }).then(() => {
         console.log("listen on port, 3001")
 
     })
-
-
 });
+

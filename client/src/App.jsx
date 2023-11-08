@@ -8,19 +8,15 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
 import './App.css'
 
-
 function App() {
   const [count, setCount] = useState([])
 
   useEffect(() => { }, [])
 
-  
-      const location = useLocation();
+        const location = useLocation();
       const isLanding = location.pathname === '/';
   
   return (
-
-
     <div>
       
       {!isLanding && <Nav />}
@@ -30,7 +26,7 @@ function App() {
         <Route path='/home' element={<Cards />} />
         <Route path='/countries/:id' element={<Details />} />
         <Route path='/form' element={<Form />} />
-        
+   
       </Routes>
     </div >
 

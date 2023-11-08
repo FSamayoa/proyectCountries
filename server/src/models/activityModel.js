@@ -25,8 +25,6 @@ module.exports = (database) => {
             allowNull: false,
         },
        
-
     });
-
     
 };

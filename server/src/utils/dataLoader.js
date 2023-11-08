@@ -34,7 +34,7 @@ async function loadDataFromJson() {
             console.error('Error.');
         }
     } catch (error) {
-        console.error('Error loading data:', error);
+        console.error('Error data load:', error);
     }
 }
 

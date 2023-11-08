@@ -1,4 +1,3 @@
-
 const {getAllActivities} = require("../controllers/getAllActivities");
 const {getActivityById} = require("../controllers/getActivityByID");
 const {deleteActivity} = require("../controllers/deleteActivities");
@@ -12,20 +11,18 @@ const postActivitiesHandler = async (req, res) => {
       const postActivity = await createActivity(name, dificultad, duracion, temporada, countryName); // Utiliza la función correcta
       res.status(201).json(postActivity);
   } catch (error) {
-      res.status(400).json({ error: error.message });
+      res.status(404).json({ error: error.message });
   }
 }
-
 
 const getAllActivitiesHandler = async (req, res) => {
     try {
         const activities = await getAllActivities();
         res.status(200).json(activities);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(404).json({ error: error.message });
     }
 };
-
 
 const getActivityByIdHandler = async (req, res) => {
     const { id } = req.params;
@@ -38,19 +35,15 @@ const getActivityByIdHandler = async (req, res) => {
     }
 };
 
-
-
 const deleteActivityHandler = async (req, res) => {
     try {
       const { activityId } = req.params;
       const result = await deleteActivity(activityId);
       res.status(200).json({ message: result });
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      res.status(404).json({ error: error.message });
     }
   };
-
-
 
   const updateActivityHandler = async (req, res) => {
     try {
@@ -62,9 +55,6 @@ const deleteActivityHandler = async (req, res) => {
       res.status(400).json({ error: error.message });
     }
   };
-
-
-
 
 module.exports = {
     
