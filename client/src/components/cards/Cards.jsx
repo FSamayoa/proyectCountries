@@ -14,8 +14,8 @@ function Cards() {
   const [busquedaCountries, setBusquedaCountries] = useState([]);
   const [regionFilter, setRegionFilter] = useState('');
   const [orderBy, setOrderBy] = useState('');
-  const [showNotFound, setShowNotFound] = useState(false);
-
+  const [notFound, setNotFound] = useState(false);
+ 
   const findCountries = busquedaCountries.length > 0
     ? busquedaCountries
     : countries;
@@ -23,7 +23,6 @@ function Cards() {
     ? findCountries.filter((country) => country.region === regionFilter)
     : findCountries;
   const sectionCountries = [...filterByRegion];
-
 
   useEffect(() => {
     dispatch(getCountries());
@@ -66,9 +65,9 @@ function Cards() {
     setBusquedaCountries(inputCountries);
 
     if (inputCountries.length === 0) {
-      setShowNotFound(true);
+      setNotFound(true);
     } else {
-      setShowNotFound(false);
+      setNotFound(false);
     }
   };
 
@@ -77,7 +76,7 @@ function Cards() {
     <div>
       <div>
         <Searchbar onSearch={handleSearch} onReset={handleReset} />
-        {showNotFound && <p>El país no se encontró.</p>}
+        {notFound && <p>El país no se encontró.</p>}
       </div>
       <div>
         <button onClick={() => handleRegionFilter('')}>All</button>

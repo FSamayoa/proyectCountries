@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import Nav from './components/nav/Nav'
 import Landing from './components/landing/Landing'
 import Cards from './components/cards/Cards'

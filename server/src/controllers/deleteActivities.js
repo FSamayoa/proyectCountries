@@ -5,14 +5,14 @@ const deleteActivity = async (activityId) => {
     const activity = await Activity.findOne(activityId);
 
     if (!activity) {
-      throw new Error('La actividad con el ID proporcionado no se encontró.');
+      throw new Error('La actividad con el ID no existe.');
     }
 
     await activity.destroy();
 
-    return 'La actividad ha sido eliminada con éxito.';
+    return 'La actividad ha sido eliminada.';
   } catch (error) {
-    throw new Error('Error al eliminar la actividad: ' + error.message);
+    throw new Error('Error al eliminar la actividad');
   }
 };
 

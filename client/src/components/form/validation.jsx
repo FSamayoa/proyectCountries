@@ -23,7 +23,14 @@ export function validateDuration(duracion) {
 
 export function validateTemporada(temporada) {
   if (temporada.length === 0) {
-      return "Debes seleccionar al menos una temporada";
+      return "Debes seleccionar una temporada";
+  }
+  return "";
+}
+
+export function validateCountry(country) {
+  if (country.length === 0) {
+      return "Debes seleccionar un pais";
   }
   return "";
 }

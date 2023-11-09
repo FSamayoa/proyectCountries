@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState} from 'react';
 import { useSelector } from 'react-redux';
 import { createActivity } from '../../redux/actions';
+import { validateNombre, validateCountry, validateDificultad, validateTemporada, validateDuration } from './validation';
 
 function FormComponent() {
+  const countries = useSelector((state) => state.countries);
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     name: '',
     dificultad: '',
@@ -12,49 +14,35 @@ function FormComponent() {
     countryName: '',
   });
 
-  const [errors, setErrors] = useState({});
-
-  const countries = useSelector((state) => state.countries);
-
   const handleInput = (event) => {
     const { name, value } = event.target;
     setFormData({
       ...formData,
       [name]: value,
     });
+    
   };
 
-  const isFormValid = () => {
-    const newErrors = {};
-    if (!formData.name) {
-      newErrors.name = 'El nombre es requerido';
+  const FormValid = () => {
+    const errorsForm = {
+    name:validateNombre(formData.name),
+    dificultad:validateDificultad(formData.dificultad),
+    duracion:validateDuration(formData.duracion),
+    temporada:validateTemporada(formData.temporada),
+    countryName:validateCountry(formData.countryName),
     }
-    if (!formData.dificultad) {
-      newErrors.dificultad = 'La dificultad es requerida';
-    }
-    if (!formData.duracion) {
-      newErrors.duracion = 'La duración es requerida';
-    }
-    if (!formData.temporada) {
-      newErrors.temporada = 'La temporada es requerida';
-    }
-    if (!formData.countryName) {
-      newErrors.countryName = 'El país es requerido';
-    }
-    setErrors(newErrors);
-    return Object.values(newErrors).every((error) => error === '');
+    setErrors(errorsForm);
+    return Object.values(errorsForm).every((error) => error === '');
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (isFormValid()) {
+    if (FormValid()) {
       try {
         const response = await createActivity(formData) 
-        console.log('Actividad creada:');
-       
+             
       } catch (error) {
-        console.error('Error al crear la actividad:', error);
-        
+                
       }
     }
   };
@@ -98,7 +86,7 @@ function FormComponent() {
             value={formData.duracion}
             onChange={handleInput}
           >
-            <option value="">Selecciona una duración</option>
+            <option value="">Selecciona una duración (min)</option>
             <option value="30">30</option>
             <option value="60">60</option>
             <option value="90">90</option>
@@ -150,7 +138,7 @@ function FormComponent() {
         <br />
         <br />
 
-        <button type="submit">Enviar</button>
+        <button type="submit" disabled={errors.length > 0}>Enviar</button>
       </form>
     </div>
   );

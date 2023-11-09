@@ -49,7 +49,7 @@ function Details() {
 
                 <li>Actividad: {activity.name}</li>
                 <li>Dificultad: {activity.dificultad}</li>
-                <li>Duracion: {activity.duracion}</li>
+                <li>Duracion: {activity.duracion} min</li>
                 <li>Temporada: {activity.temporada}</li>
                 <hr></hr>
               </div>
