@@ -2,106 +2,82 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getCountries } from '../../redux/actions'
 import Card from '../card/Card';
-import PageNumbers from '../PageNumbers/PageNumbers'
-import Searchbar from '../searchbar/Searchbar' 
+import Pages from '../PageNumbers/Pages'
+import Searchbar from '../searchbar/Searchbar'
 import styles from "../cards/Cards.module.css"
 
 function Cards() {
   const dispatch = useDispatch();
   const countries = useSelector((state) => state.countries);
+  const [actualPage, setActualPage] = useState(1);
+  const [paginaCountries, setPaginaCountries] = useState([]);
+  const [busquedaCountries, setBusquedaCountries] = useState([]);
+  const [regionFilter, setRegionFilter] = useState('');
+  const [orderBy, setOrderBy] = useState('');
+  const [showNotFound, setShowNotFound] = useState(false);
 
-  useEffect(() => {
-   dispatch(getCountries());
-  }, [dispatch]);
-
-  const totalPages = Math.ceil(countries.length / 10);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [paginatedCountries, setPaginatedCountries] = useState([]);
-  const [searchedCountries, setSearchedCountries] = useState([]);
-  const [showNotFound, setShowNotFound] = useState(false); 
-  const [notFoundCountry, setNotFoundCountry] = useState('');
-  const [regionFilter, setRegionFilter] = useState(''); 
-  const [sortBy, setSortBy] = useState(''); 
-
-  useEffect(() => {
-    const startCountryIndex = (currentPage - 1) * 10;
-    const endCountryIndex = startCountryIndex + 10;
-    const currentCountries = sortedCountries.slice(startCountryIndex, endCountryIndex);
-
-    setPaginatedCountries(currentCountries);
-  }, [countries, currentPage, searchedCountries, regionFilter, sortBy]);
-
-  const filteredCountries = searchedCountries.length > 0
-    ? searchedCountries
+  const findCountries = busquedaCountries.length > 0
+    ? busquedaCountries
     : countries;
+  const filterByRegion = regionFilter
+    ? findCountries.filter((country) => country.region === regionFilter)
+    : findCountries;
+  const sectionCountries = [...filterByRegion];
 
-  const filteredByRegion = regionFilter
-    ? filteredCountries.filter((country) => country.region === regionFilter)
-    : filteredCountries;
 
-    const sortedCountries = [...filteredByRegion];
+  useEffect(() => {
+    dispatch(getCountries());
+    const initialCountry = (actualPage - 1) * 10;
+    const finalCountry = initialCountry + 10;
+    const listCountries = sectionCountries.slice(initialCountry, finalCountry);
+    setPaginaCountries(listCountries);
+  }, [dispatch, countries, actualPage, busquedaCountries, regionFilter, orderBy]);
 
-  if (sortBy === 'name') {
-       sortedCountries.sort((a, b) => a.nombre.localeCompare(b.nombre));
-  } else if (sortBy === 'nameDesc') {
-        sortedCountries.sort((a, b) => b.nombre.localeCompare(a.nombre));
+
+  if (orderBy === 'name') {
+    sectionCountries.sort((a, b) => a.nombre.localeCompare(b.nombre));
+  } else if (orderBy === 'nameDesc') {
+    sectionCountries.sort((a, b) => b.nombre.localeCompare(a.nombre));
   }
 
 
-
-
-
-  const handleRegionFilter = (selectedRegion) => {
-    
-    setRegionFilter(selectedRegion);
-
-    setCurrentPage(1);
-  };
-
-    const handleSortChange = (selectedSort) => {
-    setSortBy(selectedSort);
-  };
-
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+    setActualPage(pageNumber);
   };
 
-  const handleSearch = (searchQuery) => {
-    const filteredCountries = countries.filter((country) =>
-      country.nombre.toLowerCase().includes(searchQuery.toLowerCase())
+  const handleRegionFilter = (Region) => {
+    setRegionFilter(Region);
+    setActualPage(1);
+  };
+
+  const handleSortChange = (Sort) => {
+    setOrderBy(Sort);
+  };
+
+  const handleReset = () => {
+    setBusquedaCountries([]);
+  };
+
+  const handleSearch = (inputSearch) => {
+    const inputCountries = countries.filter((country) =>
+      country.nombre.toLowerCase().includes(inputSearch.toLowerCase())
     );
 
-        setSearchedCountries(filteredCountries);
+    setBusquedaCountries(inputCountries);
 
-        if (filteredCountries.length === 0) {
-      
+    if (inputCountries.length === 0) {
       setShowNotFound(true);
-     
-      setNotFoundCountry(searchQuery);
     } else {
-      
       setShowNotFound(false);
-      setNotFoundCountry(''); 
     }
   };
-
-
-
-  const handleResetSearch = () => {
-  
-    setSearchedCountries([]);
-  };
-
 
 
   return (
     <div>
       <div>
-        <Searchbar onSearch={handleSearch} onReset={handleResetSearch} />
-        {showNotFound ? (
-          <p>{`El país "${notFoundCountry}" no se encontró.`}</p>
-        ) : null}
+        <Searchbar onSearch={handleSearch} onReset={handleReset} />
+        {showNotFound && <p>El país no se encontró.</p>}
       </div>
       <div>
         <button onClick={() => handleRegionFilter('')}>All</button>
@@ -110,26 +86,26 @@ function Cards() {
         <button onClick={() => handleRegionFilter('Asia')}>Asia</button>
         <button onClick={() => handleRegionFilter('Europe')}>Europa</button>
         <button onClick={() => handleRegionFilter('Oceania')}>Oceania</button>
-      
-        <select onChange={(e) => handleSortChange(e.target.value)}>
+
+        <select onChange={(event) => handleSortChange(event.target.value)}>
           <option value="">Ordenado</option>
           <option value="name">A-Z</option>
           <option value="nameDesc">Z-A</option>
         </select>
       </div>
       <div className={styles.divCard}>
-      
-        {sortedCountries.length > 0 ? (
-          paginatedCountries.map((country) => (
+
+        {sectionCountries.length > 0 ? (
+          paginaCountries.map((country) => (
             <Card key={country.id} country={country} />
           ))
         ) : (
           <p>No se encontraron países que cumplan con los filtros seleccionados.</p>
         )}
       </div>
-      <PageNumbers
-        totalPages={Math.ceil(sortedCountries.length / 10)}
-        current={currentPage}
+      <Pages
+        totalPages={Math.ceil(sectionCountries.length / 10)}
+        current={actualPage}
         onPageChange={handlePageChange}
       />
     </div>

@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 
 function Searchbar({ onSearch, onReset }) {
-  const [query, setQuery] = useState('');
+  const [findCountry, setfindCountry] = useState('');
 
   const handleChange = (event) => {
-    setQuery(event.target.value);
+    setfindCountry(event.target.value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSearch(query);
+    onSearch(findCountry);
   };
 
   const handleReset = () => {
-  
     onReset();
   };
 
@@ -25,10 +24,10 @@ function Searchbar({ onSearch, onReset }) {
           type="text"
           placeholder="Buscar país"
           onChange={handleChange}
-          value={query}
+          value={findCountry}
         />
         <button type="submit">Buscar</button>
-      <button onClick={handleReset}>Todos</button>
+        <button onClick={handleReset}>Todos</button>
       </form>
       <hr></hr>
     </div>

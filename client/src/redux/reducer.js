@@ -1,4 +1,4 @@
-import { ALL_COUNTRIES, COUNTRY_DETAILS } from "./actionTypes";
+import { ALL_COUNTRIES,} from "./actionTypes";
 
 const initialState = {
   countries: [],
@@ -14,12 +14,7 @@ const reducer = (state = initialState, action) => {
         countries: action.payload,
         error: null,
       };
-    case COUNTRY_DETAILS:
-      return {
-        ...state,
-        countryDetails: action.payload,
-        error: null,
-      };
+   
 
     default:
       return state;

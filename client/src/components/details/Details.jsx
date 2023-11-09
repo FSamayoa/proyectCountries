@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
-import { useSelector, useDispatch } from 'react-redux';
-import { getCountryDetail } from '../../redux/actions';
 import axios from "axios";
 import styles from "../details/Details.module.css"
 
 function Details() {
   const [countryDetail, setCountryDetail] = useState([]);
-  const dispatch = useDispatch();
-  const { id } = useParams(); 
+  const { id } = useParams();
 
   useEffect(() => {
     axios(`http://localhost:3001/countries/${id}`)
@@ -16,8 +13,6 @@ function Details() {
 
         if (data.nombre) {
           setCountryDetail(data);
-        } else {
-          window.alert('No existe ese país');
         }
       })
       .catch((error) => {
@@ -48,10 +43,10 @@ function Details() {
       <h4>Actividades para realizar en el destino: </h4>
       <div className={`${styles.cardActividades} ${styles.textoActividades}`}>
         <ul>
-          {Array.isArray(countryDetail?.Activities) ? (
+          {Array.isArray(countryDetail?.Activities) && countryDetail.Activities.length > 0 ? (
             countryDetail?.Activities.map((activity) => (
               <div key={activity.id}>
-                
+
                 <li>Actividad: {activity.name}</li>
                 <li>Dificultad: {activity.dificultad}</li>
                 <li>Duracion: {activity.duracion}</li>
@@ -60,7 +55,7 @@ function Details() {
               </div>
             ))
           ) : (
-            <li>No activities available.</li>
+            <li>No existen actividades registradas</li>
           )}
         </ul>
       </div>

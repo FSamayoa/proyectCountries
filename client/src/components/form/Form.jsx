@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { createActivity } from '../../redux/actions';
 
 function FormComponent() {
   const [formData, setFormData] = useState({
@@ -48,12 +49,12 @@ function FormComponent() {
     event.preventDefault();
     if (isFormValid()) {
       try {
-        const response = await axios.post('http://127.0.0.1:3001/activities/post', formData);
-        console.log('Actividad creada:', response.data);
-        // Puedes agregar lógica adicional aquí, como mostrar un mensaje al usuario.
+        const response = await createActivity(formData) 
+        console.log('Actividad creada:');
+       
       } catch (error) {
         console.error('Error al crear la actividad:', error);
-        // Puedes manejar errores de solicitud aquí, como mostrar un mensaje de error al usuario.
+        
       }
     }
   };

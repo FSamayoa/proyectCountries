@@ -1,6 +1,6 @@
 import React from 'react';
 
-function PageNumbers({ totalPages, current, onPageChange }) {
+function PageNumbers({ totalPages, actualPage, onPageChange }) {
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
@@ -9,7 +9,6 @@ function PageNumbers({ totalPages, current, onPageChange }) {
         <button
           key={page}
           onClick={() => onPageChange(page)}
-          className={page === current ? 'active' : ''}
         >
           {page}
         </button>
