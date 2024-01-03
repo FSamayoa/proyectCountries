@@ -3,8 +3,8 @@ const db = require("./src/db")
 const { loadDataFromJson } = require('./src/utils/dataLoader');
 
 
-db.database.sync({ force: true }).then(() => {
-    loadDataFromJson();
+db.database.sync().then(() => {
+    // loadDataFromJson();  comentado pues ya se ingresaron los datos a la bd
 
    
     server.listen("3001", () => {
